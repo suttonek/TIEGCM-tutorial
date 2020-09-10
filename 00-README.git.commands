@@ -1,0 +1,17 @@
+> git init
+Initialized empty Git repository in /home/suttonek/TIEGCM-tutorial/.git/
+> git add .
+> git commit -m "adding files"
+> git remote add origin https://github.com/suttonek/TIEGCM-tutorial.git
+> git push -u origin master
+Username for 'https://github.com': eric.sutton@colorado.edu
+Password for 'https://eric.sutton@colorado.edu@github.com': 
+Counting objects: 469, done.
+Delta compression using up to 12 threads.
+Compressing objects: 100% (469/469), done.
+Writing objects: 100% (469/469), 33.84 MiB | 6.24 MiB/s, done.
+Total 469 (delta 204), reused 0 (delta 0)
+remote: Resolving deltas: 100% (204/204), done.
+To https://github.com/suttonek/TIEGCM-tutorial.git
+ * [new branch]      master -> master
+Branch 'master' set up to track remote branch 'master' from 'origin'.
