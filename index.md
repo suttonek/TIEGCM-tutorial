@@ -1,5 +1,8 @@
 ---
 layout: page
+title: TIEGCM Tutorial
+tagline: quick-start guide
+description: A quick-start tutorial for working with TIEGCM output using Matlab
 ---
 
 A quick-start tutorial for working with TIEGCM output using Matlab
