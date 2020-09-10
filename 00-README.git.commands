@@ -1,3 +1,4 @@
+# Initial setup and commits to repository:
 > git init
 Initialized empty Git repository in /home/suttonek/TIEGCM-tutorial/.git/
 > git add .
@@ -15,3 +16,10 @@ remote: Resolving deltas: 100% (204/204), done.
 To https://github.com/suttonek/TIEGCM-tutorial.git
  * [new branch]      master -> master
 Branch 'master' set up to track remote branch 'master' from 'origin'.
+
+
+# Subsequent pushes:
+git add .
+git commit -m "<commit message>"
+git status
+git push
