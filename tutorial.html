@@ -1,0 +1,455 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Open and plot variables from TIE-GCM netCDF files</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-02-20"><meta name="DC.source" content="tutorial.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Open and plot variables from TIE-GCM netCDF files</h1><!--introduction--><p>struct m0: output from a baseline simulation w/ low F10.7 and Kp</p><p>struct m1: output with a step-increase to Kp at t=0</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Load TIE-GCM output netCDF files</a></li><li><a href="#5">Plot the Temperature difference (m1-m0) on a pressure level</a></li><li><a href="#8">Plot the Density ratio (m1/m0) on a pressure level</a></li><li><a href="#11">Plot the Density ratio (m1/m0) at a fixed altitude</a></li><li><a href="#14">Plot vertical profiles of number density after 20 minutes of simulation at the location of maximum <img src="tutorial_eq07604344039509551145.png" alt="$\rho_1/\rho_0$" style="width:25px;height:11px;"> (from Figure 3)</a></li><li><a href="#23">Plot vertical profiles of number density after 1 day of simulation at the location of maximum <img src="tutorial_eq07604344039509551145.png" alt="$\rho_1/\rho_0$" style="width:25px;height:11px;"> (from Figure 3)</a></li></ul></div><h2 id="1">Load TIE-GCM output netCDF files</h2><p>m0 is the baseline simulation (low F10.7 and Kp)</p><pre class="codeinput">m0 = get_netcdf_variables(<span class="string">'lowF107.lowKp/s080.nc'</span>);
+</pre><p>m1 is the "disturbed" case, in which a step function in Kp is applied at t=0</p><pre class="codeinput">m1 = get_netcdf_variables(<span class="string">'lowF107.lowtohighKp/s080.nc'</span>);
+</pre><p>increase figure font size</p><pre class="codeinput">set(0,<span class="string">'defaultaxesfontsize'</span>,16);
+</pre><p>constants</p><pre class="codeinput">boltz = 1.38e-16; <span class="comment">% Boltzmann constant as TIE-GCM uses</span>
+m_O2=32;m_O1=16;m_N2=28;m_HE=4; <span class="comment">% Molecular masses (AMU)</span>
+</pre><h2 id="5">Plot the Temperature difference (m1-m0) on a pressure level</h2><p>Desired pressure level</p><pre class="codeinput">nlev = 25;
+</pre><p>loop through model output times</p><pre class="codeinput"><span class="keyword">for</span> it = 1:size(m0.mtime,2),
+    <span class="comment">% calculate local time from longitude and UT time</span>
+    slt = mod([1,1/60]*double(m0.mtime(2:3,it))+m0.lon/15,24);
+    <span class="comment">% sort the data by local time</span>
+    [slt,islt] = sort(slt);
+    <span class="comment">% plot the ratio</span>
+    contourf(slt,m0.lat,(m1.TN(islt,:,nlev,it)-m0.TN(islt,:,nlev,it))',25,<span class="keyword">...</span>
+        <span class="string">'edgecolor'</span>,<span class="string">'none'</span>);
+    set(gca,<span class="string">'clim'</span>,[0,200],<span class="string">'xlim'</span>,[0,23.6667],<span class="string">'xtick'</span>,0:4:24);
+    colorbar;
+    <span class="comment">% annotate plot</span>
+    xlabel(<span class="string">'Local Time (hours)'</span>);ylabel(<span class="string">'Latitude (deg)'</span>);
+    title({<span class="string">'Temperature Difference (K), m1-m0'</span>,<span class="keyword">...</span>
+        sprintf(<span class="string">'Zp=%.2f, %02d:%02d UT, Day %d'</span>,<span class="keyword">...</span>
+        m0.lev(nlev),m0.mtime([2:3,1],it))});
+    <span class="comment">% save plot</span>
+    <span class="comment">%print(gcf,'-depsc2',sprintf('html/TNdiff_%02d',it));</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="tutorial_01.gif" alt=""> <p>Figure 1. Temperature difference <img src="tutorial_eq05718754600253839406.png" alt="$(T_1 - T_0)$" style="width:42px;height:11px;"> at a fixed pressure level <img src="tutorial_eq09217457129092658123.png" alt="$z_p = 5.25$" style="width:44px;height:11px;">.</p><h2 id="8">Plot the Density ratio (m1/m0) on a pressure level</h2><p>Desired pressure level</p><pre class="codeinput">nlev = 25;
+</pre><p>loop through model output times</p><pre class="codeinput"><span class="keyword">for</span> it = 1:size(m0.mtime,2),
+    <span class="comment">% calculate local time from longitude and UT time</span>
+    slt = mod([1,1/60]*double(m0.mtime(2:3,it))+m0.lon/15,24);
+    <span class="comment">% sort the data by local time</span>
+    [slt,islt] = sort(slt);
+    <span class="comment">% plot the ratio</span>
+    contourf(slt,m0.lat,(m1.DEN(islt,:,nlev,it)./m0.DEN(islt,:,nlev,it))',25,<span class="keyword">...</span>
+        <span class="string">'edgecolor'</span>,<span class="string">'none'</span>);
+    set(gca,<span class="string">'clim'</span>,[0.9,1],<span class="string">'xlim'</span>,[0,23.6667],<span class="string">'xtick'</span>,0:4:24);
+    colorbar
+    <span class="comment">% annotate plot</span>
+    xlabel(<span class="string">'Local Time (hours)'</span>);ylabel(<span class="string">'Latitude (deg)'</span>);
+    title({<span class="string">'Density Ratio, m1/m0'</span>,<span class="keyword">...</span>
+        sprintf(<span class="string">'Zp=%.2f, %02d:%02d UT, Day %d'</span>,<span class="keyword">...</span>
+        m0.ilev(nlev),m0.mtime([2:3,1],it))});
+    <span class="comment">% save plot</span>
+    <span class="comment">%print(gcf,'-depsc2',sprintf('html/DENratio_%02d',it));</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="tutorial_02.gif" alt=""> <p>Figure 2. Density ratio <img src="tutorial_eq01286994770554135291.png" alt="$(\rho_1/\rho_0)$" style="width:32px;height:11px;"> at a fixed pressure level <img src="tutorial_eq14570535899539384383.png" alt="$z_p = 5.0$" style="width:38px;height:11px;">.</p><h2 id="11">Plot the Density ratio (m1/m0) at a fixed altitude</h2><p>Desired height</p><pre class="codeinput">height = 400e5; <span class="comment">% (cm)</span>
+</pre><p>loop through model output times</p><pre class="codeinput"><span class="keyword">for</span> it = 1:size(m0.mtime,2),
+    <span class="comment">% calculate local time from longitude and UT time</span>
+    slt = mod([1,1/60]*double(m0.mtime(2:3,it))+m0.lon/15,24);
+    <span class="comment">% sort the data by local time</span>
+    [slt,islt] = sort(slt);
+    <span class="comment">% interpolate to fixed altitude in log-space</span>
+    [m0.den_alt,m1.den_alt] = deal(zeros(length(m0.lon),length(m0.lat))); <span class="comment">% preallocate to avoid variables growing in for-loop</span>
+    <span class="keyword">for</span> ilon = 1:length(m0.lon),
+        <span class="keyword">for</span> ilat = 1:length(m0.lat),
+            m0.den_alt(ilon,ilat) = interp1q(squeeze(m0.ZG(ilon,ilat,1:end-1,it)),log(squeeze(m0.DEN(ilon,ilat,1:end-1,it))),height);
+            m1.den_alt(ilon,ilat) = interp1q(squeeze(m1.ZG(ilon,ilat,1:end-1,it)),log(squeeze(m1.DEN(ilon,ilat,1:end-1,it))),height);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    <span class="comment">% convert log-densities back to densities</span>
+    [m0.den_alt,m1.den_alt] = deal(exp(m0.den_alt),exp(m1.den_alt));
+    <span class="comment">% plot the ratio</span>
+    contourf(slt,m0.lat,(m1.den_alt(islt,:)./m0.den_alt(islt,:))',25,<span class="keyword">...</span>
+        <span class="string">'edgecolor'</span>,<span class="string">'none'</span>);
+    set(gca,<span class="string">'clim'</span>,[1,1.65],<span class="string">'xlim'</span>,[0,23.6667],<span class="string">'xtick'</span>,0:4:24);
+    colorbar
+    <span class="comment">% annotate plot</span>
+    xlabel(<span class="string">'Local Time (hours)'</span>);ylabel(<span class="string">'Latitude (deg)'</span>);
+    title({<span class="string">'Density Ratio, m1/m0'</span>,<span class="keyword">...</span>
+        sprintf(<span class="string">'Height = %d km, %02d:%02d UT, Day %d'</span>,<span class="keyword">...</span>
+        round(1e-5*height),m0.mtime([2:3,1],it))});
+    <span class="comment">% save plot</span>
+    <span class="comment">%print(gcf,'-depsc2',sprintf('html/DENratio_alt_%02d',it));</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="tutorial_03.gif" alt=""> <p>Figure 3. Density ratio <img src="tutorial_eq01286994770554135291.png" alt="$(\rho_1/\rho_0)$" style="width:32px;height:11px;"> at a fixed altitude of 400 km.</p><h2 id="14">Plot vertical profiles of number density after 20 minutes of simulation at the location of maximum <img src="tutorial_eq07604344039509551145.png" alt="$\rho_1/\rho_0$" style="width:25px;height:11px;"> (from Figure 3)</h2><p>Starting with the ideal gas law, we want to calculate number density for species <img src="tutorial_eq05671228016298599287.png" alt="$i$" style="width:3px;height:8px;">:</p><p><img src="tutorial_eq01369607532060717491.png" alt="$$ P = n k_B T $$" style="width:51px;height:10px;"></p><p>Substitute <img src="tutorial_eq03494680434336691329.png" alt="$\rho = n \bar{m}$" style="width:37px;height:9px;"></p><p><img src="tutorial_eq10433533406913736035.png" alt="$$ P = \frac{\rho}{\bar{m}} k_B T $$" style="width:56px;height:21px;"></p><p>Multiply both sides by the mass mixing ratio of species <img src="tutorial_eq05671228016298599287.png" alt="$i$" style="width:3px;height:8px;">:</p><p><img src="tutorial_eq14664314750452303836.png" alt="$$ \psi_i P = \frac{\psi_i \rho}{\bar{m}} k_B T $$" style="width:73px;height:23px;"></p><p>Substitute <img src="tutorial_eq16680611719804126173.png" alt="$\psi_i \rho = \rho_i = n_i m_i$" style="width:76px;height:11px;">:</p><p><img src="tutorial_eq02057490279769088559.png" alt="$$ \psi_i P = \frac{n_i m_i}{\bar{m}} k_B T $$" style="width:80px;height:21px;"></p><p>Solve for number density <img src="tutorial_eq15835381623295917790.png" alt="$n_i$" style="width:9px;height:7px;"> in terms of TIE-GCM output variables:</p><p><img src="tutorial_eq15784132295940904210.png" alt="$$ n_i = \frac{\psi_i P \bar{m}}{m_i k_B T} $$" style="width:59px;height:25px;"></p><pre class="codeinput">it = 1; <span class="comment">% time index</span>
+</pre><p>calculate local time</p><pre class="codeinput">slt = mod([1,1/60]*double(m0.mtime(2:3,it))+m0.lon/15,24);
+</pre><p>find maximum density difference from previous plot after 1 day of simulation</p><pre class="codeinput">[ilon,ilat] = find( max(max(m1.den_alt./m0.den_alt)) == m1.den_alt./m0.den_alt );
+</pre><p>Calculate pressure on the midpoints (lev) as opposed to interfaces (ilev) for these variables:</p><pre class="codeinput">P = m0.p0_model*exp(-m0.lev);
+</pre><p>Calculate mean mass <img src="tutorial_eq14599097788323678278.png" alt="$\bar{m}$" style="width:10px;height:7px;"> for baseline model m0</p><pre class="codeinput">m0.HE = 1-m0.O2-m0.O1-m0.N2; <span class="comment">% quick fix: I forgot to output HE in these files, woops</span>
+m0.mbar = 1./(m0.O2/32+m0.O1/16+m0.N2/28+m0.HE/4);
+</pre><p>Calculate <img src="tutorial_eq15835381623295917790.png" alt="$n_i$" style="width:9px;height:7px;"> for baseline model m0 (ignore the upper 4 grid points for composition)</p><pre class="codeinput">term = (1/boltz)*P(1:end-4).*squeeze(m0.mbar(ilon,ilat,1:end-4,it)./m0.TN(ilon,ilat,1:end-4,it));
+m0.n_O2 = term.*squeeze(m0.O2(ilon,ilat,1:end-4,it))/m_O2;
+m0.n_O1 = term.*squeeze(m0.O1(ilon,ilat,1:end-4,it))/m_O1;
+m0.n_N2 = term.*squeeze(m0.N2(ilon,ilat,1:end-4,it))/m_N2;
+m0.n_HE = term.*squeeze(m0.HE(ilon,ilat,1:end-4,it))/m_HE;
+</pre><p>Calculate mean mass <img src="tutorial_eq14599097788323678278.png" alt="$\bar{m}$" style="width:10px;height:7px;"> for disturbed model m1</p><pre class="codeinput">m1.HE = 1-m1.O2-m1.O1-m1.N2; <span class="comment">% quick fix: I forgot to output HE in these files, woops</span>
+m1.mbar = 1./(m1.O2/32+m1.O1/16+m1.N2/28+m1.HE/4);
+</pre><p>Calculate <img src="tutorial_eq15835381623295917790.png" alt="$n_i$" style="width:9px;height:7px;"> for disturbed model m1 (ignore the upper 4 grid points for composition)</p><pre class="codeinput">term = (1/boltz)*P(1:end-4).*squeeze(m1.mbar(ilon,ilat,1:end-4,it)./m1.TN(ilon,ilat,1:end-4,it));
+m1.n_O2 = term.*squeeze(m1.O2(ilon,ilat,1:end-4,it))/m_O2;
+m1.n_O1 = term.*squeeze(m1.O1(ilon,ilat,1:end-4,it))/m_O1;
+m1.n_N2 = term.*squeeze(m1.N2(ilon,ilat,1:end-4,it))/m_N2;
+m1.n_HE = term.*squeeze(m1.HE(ilon,ilat,1:end-4,it))/m_HE;
+</pre><p>plot m0 and m1 profiles</p><pre class="codeinput">subplot <span class="string">121</span>
+semilogx([m0.n_O2,m0.n_O1,m0.n_N2,m0.n_HE],1e-5*squeeze(m0.ZGMID(ilon,ilat,1:end-4,it)),<span class="string">'--'</span>,<span class="string">'linewidth'</span>,1);
+hold <span class="string">on</span>;
+set(gca,<span class="string">'colororderindex'</span>,1);
+semilogx([m1.n_O2,m1.n_O1,m1.n_N2,m1.n_HE],1e-5*squeeze(m1.ZGMID(ilon,ilat,1:end-4,it)),<span class="string">'linewidth'</span>,1);
+xlabel(<span class="string">'Number Density (1/cm^3)'</span>);
+ylabel(<span class="string">'Height (km)'</span>);
+title({<span class="string">'20 Minutes After Onset'</span>,sprintf(<span class="string">'Lon=%d, Lat=%.1f'</span>,m0.lon(ilon),m0.lat(ilat))});
+xlim([1e6,1e10])
+ylim([100,550]);
+legend(<span class="string">'O_2'</span>,<span class="string">'O'</span>,<span class="string">'N_2'</span>,<span class="string">'He'</span>);
+</pre><img vspace="5" hspace="5" src="tutorial_04.png" alt=""> <h2 id="23">Plot vertical profiles of number density after 1 day of simulation at the location of maximum <img src="tutorial_eq07604344039509551145.png" alt="$\rho_1/\rho_0$" style="width:25px;height:11px;"> (from Figure 3)</h2><p>Starting with the ideal gas law, we want to calculate number density for species <img src="tutorial_eq05671228016298599287.png" alt="$i$" style="width:3px;height:8px;">:</p><p><img src="tutorial_eq01369607532060717491.png" alt="$$ P = n k_B T $$" style="width:51px;height:10px;"></p><p>Substitute <img src="tutorial_eq03494680434336691329.png" alt="$\rho = n \bar{m}$" style="width:37px;height:9px;"></p><p><img src="tutorial_eq10433533406913736035.png" alt="$$ P = \frac{\rho}{\bar{m}} k_B T $$" style="width:56px;height:21px;"></p><p>Multiply both sides by the mass mixing ratio of species <img src="tutorial_eq05671228016298599287.png" alt="$i$" style="width:3px;height:8px;">:</p><p><img src="tutorial_eq14664314750452303836.png" alt="$$ \psi_i P = \frac{\psi_i \rho}{\bar{m}} k_B T $$" style="width:73px;height:23px;"></p><p>Substitute <img src="tutorial_eq16680611719804126173.png" alt="$\psi_i \rho = \rho_i = n_i m_i$" style="width:76px;height:11px;">:</p><p><img src="tutorial_eq02057490279769088559.png" alt="$$ \psi_i P = \frac{n_i m_i}{\bar{m}} k_B T $$" style="width:80px;height:21px;"></p><p>Solve for number density <img src="tutorial_eq15835381623295917790.png" alt="$n_i$" style="width:9px;height:7px;"> in terms of TIE-GCM output variables:</p><p><img src="tutorial_eq15784132295940904210.png" alt="$$ n_i = \frac{\psi_i P \bar{m}}{m_i k_B T} $$" style="width:59px;height:25px;"></p><pre class="codeinput">it = 72; <span class="comment">% time index</span>
+</pre><p>calculate local time</p><pre class="codeinput">slt = mod([1,1/60]*double(m0.mtime(2:3,it))+m0.lon/15,24);
+</pre><p>find maximum density difference from previous plot after 1 day of simulation</p><pre class="codeinput">[ilon,ilat] = find( max(max(m1.den_alt./m0.den_alt)) == m1.den_alt./m0.den_alt );
+</pre><p>Calculate pressure on the midpoints (lev) as opposed to interfaces (ilev) for these variables:</p><pre class="codeinput">P = m0.p0_model*exp(-m0.lev);
+</pre><p>Calculate mean mass <img src="tutorial_eq14599097788323678278.png" alt="$\bar{m}$" style="width:10px;height:7px;"> for baseline model m0</p><pre class="codeinput">m0.HE = 1-m0.O2-m0.O1-m0.N2; <span class="comment">% quick fix: I forgot to output HE in these files, woops</span>
+m0.mbar = 1./(m0.O2/32+m0.O1/16+m0.N2/28+m0.HE/4);
+<span class="comment">% Calculate $n_i$ for baseline model m0 (ignore the upper 4 grid points for composition)</span>
+term = (1/boltz)*P(1:end-4).*squeeze(m0.mbar(ilon,ilat,1:end-4,it)./m0.TN(ilon,ilat,1:end-4,it));
+m0.n_O2 = term.*squeeze(m0.O2(ilon,ilat,1:end-4,it))/m_O2;
+m0.n_O1 = term.*squeeze(m0.O1(ilon,ilat,1:end-4,it))/m_O1;
+m0.n_N2 = term.*squeeze(m0.N2(ilon,ilat,1:end-4,it))/m_N2;
+m0.n_HE = term.*squeeze(m0.HE(ilon,ilat,1:end-4,it))/m_HE;
+</pre><p>Calculate mean mass <img src="tutorial_eq14599097788323678278.png" alt="$\bar{m}$" style="width:10px;height:7px;"> for disturbed model m1</p><pre class="codeinput">m1.HE = 1-m1.O2-m1.O1-m1.N2; <span class="comment">% quick fix: I forgot to output HE in these files, woops</span>
+m1.mbar = 1./(m1.O2/32+m1.O1/16+m1.N2/28+m1.HE/4);
+</pre><p>Calculate <img src="tutorial_eq15835381623295917790.png" alt="$n_i$" style="width:9px;height:7px;"> for disturbed model m1 (ignore the upper 4 grid points for composition)</p><pre class="codeinput">term = (1/boltz)*P(1:end-4).*squeeze(m1.mbar(ilon,ilat,1:end-4,it)./m1.TN(ilon,ilat,1:end-4,it));
+m1.n_O2 = term.*squeeze(m1.O2(ilon,ilat,1:end-4,it))/m_O2;
+m1.n_O1 = term.*squeeze(m1.O1(ilon,ilat,1:end-4,it))/m_O1;
+m1.n_N2 = term.*squeeze(m1.N2(ilon,ilat,1:end-4,it))/m_N2;
+m1.n_HE = term.*squeeze(m1.HE(ilon,ilat,1:end-4,it))/m_HE;
+</pre><p>plot m0 and m1 profiles</p><pre class="codeinput">subplot <span class="string">122</span>
+semilogx([m0.n_O2,m0.n_O1,m0.n_N2,m0.n_HE],1e-5*squeeze(m0.ZGMID(ilon,ilat,1:end-4,it)),<span class="string">'--'</span>,<span class="string">'linewidth'</span>,1);
+hold <span class="string">on</span>;
+set(gca,<span class="string">'colororderindex'</span>,1);
+semilogx([m1.n_O2,m1.n_O1,m1.n_N2,m1.n_HE],1e-5*squeeze(m1.ZGMID(ilon,ilat,1:end-4,it)),<span class="string">'linewidth'</span>,1);
+xlabel(<span class="string">'Number Density (1/cm^3)'</span>);
+ylabel(<span class="string">'Height (km)'</span>);
+title({<span class="string">'1 Day After Onset'</span>,sprintf(<span class="string">'Lon=%d, Lat=%.1f'</span>,m0.lon(ilon),m0.lat(ilat))});
+xlim([1e6,1e10])
+ylim([100,550]);
+legend(<span class="string">'O_2'</span>,<span class="string">'O'</span>,<span class="string">'N_2'</span>,<span class="string">'He'</span>);
+</pre><img vspace="5" hspace="5" src="tutorial_05.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Open and plot variables from TIE-GCM netCDF files
+% struct m0: output from a baseline simulation w/ low F10.7 and Kp
+%
+% struct m1: output with a step-increase to Kp at t=0
+
+
+%% Load TIE-GCM output netCDF files
+% m0 is the baseline simulation (low F10.7 and Kp)
+m0 = get_netcdf_variables('lowF107.lowKp/s080.nc');
+%%
+% m1 is the "disturbed" case, in which a step function in Kp is applied at
+% t=0
+m1 = get_netcdf_variables('lowF107.lowtohighKp/s080.nc');
+%%
+% increase figure font size
+set(0,'defaultaxesfontsize',16);
+%%
+% constants
+boltz = 1.38e-16; % Boltzmann constant as TIE-GCM uses
+m_O2=32;m_O1=16;m_N2=28;m_HE=4; % Molecular masses (AMU)
+
+%% Plot the Temperature difference (m1-m0) on a pressure level
+% Desired pressure level
+nlev = 25;
+%%
+% loop through model output times
+for it = 1:size(m0.mtime,2),                                                               
+    % calculate local time from longitude and UT time
+    slt = mod([1,1/60]*double(m0.mtime(2:3,it))+m0.lon/15,24);
+    % sort the data by local time
+    [slt,islt] = sort(slt);
+    % plot the ratio
+    contourf(slt,m0.lat,(m1.TN(islt,:,nlev,it)-m0.TN(islt,:,nlev,it))',25,...
+        'edgecolor','none');
+    set(gca,'clim',[0,200],'xlim',[0,23.6667],'xtick',0:4:24);
+    colorbar;
+    % annotate plot
+    xlabel('Local Time (hours)');ylabel('Latitude (deg)');
+    title({'Temperature Difference (K), m1-m0',...
+        sprintf('Zp=%.2f, %02d:%02d UT, Day %d',...
+        m0.lev(nlev),m0.mtime([2:3,1],it))});
+    % save plot
+    %print(gcf,'-depsc2',sprintf('html/TNdiff_%02d',it));
+end
+%%
+% Figure 1. Temperature difference $(T_1 - T_0)$ at a fixed pressure level $z_p = 5.25$.
+
+%% Plot the Density ratio (m1/m0) on a pressure level
+% Desired pressure level
+nlev = 25;
+%%
+% loop through model output times
+for it = 1:size(m0.mtime,2),                                                               
+    % calculate local time from longitude and UT time
+    slt = mod([1,1/60]*double(m0.mtime(2:3,it))+m0.lon/15,24);
+    % sort the data by local time
+    [slt,islt] = sort(slt);
+    % plot the ratio
+    contourf(slt,m0.lat,(m1.DEN(islt,:,nlev,it)./m0.DEN(islt,:,nlev,it))',25,...
+        'edgecolor','none');
+    set(gca,'clim',[0.9,1],'xlim',[0,23.6667],'xtick',0:4:24);
+    colorbar
+    % annotate plot
+    xlabel('Local Time (hours)');ylabel('Latitude (deg)');
+    title({'Density Ratio, m1/m0',...
+        sprintf('Zp=%.2f, %02d:%02d UT, Day %d',...
+        m0.ilev(nlev),m0.mtime([2:3,1],it))});
+    % save plot
+    %print(gcf,'-depsc2',sprintf('html/DENratio_%02d',it));
+end
+%%
+% Figure 2. Density ratio $(\rho_1/\rho_0)$ at a fixed pressure level $z_p = 5.0$.
+
+%% Plot the Density ratio (m1/m0) at a fixed altitude
+% Desired height
+height = 400e5; % (cm)
+%%
+% loop through model output times
+for it = 1:size(m0.mtime,2),                                                               
+    % calculate local time from longitude and UT time
+    slt = mod([1,1/60]*double(m0.mtime(2:3,it))+m0.lon/15,24);
+    % sort the data by local time
+    [slt,islt] = sort(slt);
+    % interpolate to fixed altitude in log-space
+    [m0.den_alt,m1.den_alt] = deal(zeros(length(m0.lon),length(m0.lat))); % preallocate to avoid variables growing in for-loop
+    for ilon = 1:length(m0.lon),
+        for ilat = 1:length(m0.lat),
+            m0.den_alt(ilon,ilat) = interp1q(squeeze(m0.ZG(ilon,ilat,1:end-1,it)),log(squeeze(m0.DEN(ilon,ilat,1:end-1,it))),height);
+            m1.den_alt(ilon,ilat) = interp1q(squeeze(m1.ZG(ilon,ilat,1:end-1,it)),log(squeeze(m1.DEN(ilon,ilat,1:end-1,it))),height);
+        end
+    end
+    % convert log-densities back to densities
+    [m0.den_alt,m1.den_alt] = deal(exp(m0.den_alt),exp(m1.den_alt));
+    % plot the ratio
+    contourf(slt,m0.lat,(m1.den_alt(islt,:)./m0.den_alt(islt,:))',25,...
+        'edgecolor','none');
+    set(gca,'clim',[1,1.65],'xlim',[0,23.6667],'xtick',0:4:24);
+    colorbar
+    % annotate plot
+    xlabel('Local Time (hours)');ylabel('Latitude (deg)');
+    title({'Density Ratio, m1/m0',...
+        sprintf('Height = %d km, %02d:%02d UT, Day %d',...
+        round(1e-5*height),m0.mtime([2:3,1],it))});
+    % save plot
+    %print(gcf,'-depsc2',sprintf('html/DENratio_alt_%02d',it));
+end
+%%
+% Figure 3. Density ratio $(\rho_1/\rho_0)$ at a fixed altitude of 400 km.
+
+%% Plot vertical profiles of number density after 20 minutes of simulation at the location of maximum $\rho_1/\rho_0$ (from Figure 3)
+% Starting with the ideal gas law, we want to calculate number density for
+% species $i$:
+%
+% $$ P = n k_B T $$
+% 
+% Substitute $\rho = n \bar{m}$
+%
+% $$ P = \frac{\rho}{\bar{m}} k_B T $$
+%
+% Multiply both sides by the mass mixing ratio of species $i$:
+%
+% $$ \psi_i P = \frac{\psi_i \rho}{\bar{m}} k_B T $$
+%
+% Substitute $\psi_i \rho = \rho_i = n_i m_i$:
+%
+% $$ \psi_i P = \frac{n_i m_i}{\bar{m}} k_B T $$
+%
+% Solve for number density $n_i$ in terms of TIE-GCM output variables:
+%
+% $$ n_i = \frac{\psi_i P \bar{m}}{m_i k_B T} $$
+
+it = 1; % time index
+%%
+% calculate local time
+slt = mod([1,1/60]*double(m0.mtime(2:3,it))+m0.lon/15,24);
+%%
+% find maximum density difference from previous plot after 1 day of
+% simulation
+[ilon,ilat] = find( max(max(m1.den_alt./m0.den_alt)) == m1.den_alt./m0.den_alt );
+
+%%
+% Calculate pressure on the midpoints (lev) as opposed to interfaces (ilev) for these
+% variables:
+P = m0.p0_model*exp(-m0.lev);
+
+%%
+% Calculate mean mass $\bar{m}$ for baseline model m0
+m0.HE = 1-m0.O2-m0.O1-m0.N2; % quick fix: I forgot to output HE in these files, woops
+m0.mbar = 1./(m0.O2/32+m0.O1/16+m0.N2/28+m0.HE/4);
+%%
+% Calculate $n_i$ for baseline model m0 (ignore the upper 4 grid points for composition)
+term = (1/boltz)*P(1:end-4).*squeeze(m0.mbar(ilon,ilat,1:end-4,it)./m0.TN(ilon,ilat,1:end-4,it));
+m0.n_O2 = term.*squeeze(m0.O2(ilon,ilat,1:end-4,it))/m_O2;
+m0.n_O1 = term.*squeeze(m0.O1(ilon,ilat,1:end-4,it))/m_O1;
+m0.n_N2 = term.*squeeze(m0.N2(ilon,ilat,1:end-4,it))/m_N2;
+m0.n_HE = term.*squeeze(m0.HE(ilon,ilat,1:end-4,it))/m_HE;
+%%
+% Calculate mean mass $\bar{m}$ for disturbed model m1
+m1.HE = 1-m1.O2-m1.O1-m1.N2; % quick fix: I forgot to output HE in these files, woops
+m1.mbar = 1./(m1.O2/32+m1.O1/16+m1.N2/28+m1.HE/4);
+%%
+% Calculate $n_i$ for disturbed model m1 (ignore the upper 4 grid points for composition)
+term = (1/boltz)*P(1:end-4).*squeeze(m1.mbar(ilon,ilat,1:end-4,it)./m1.TN(ilon,ilat,1:end-4,it));
+m1.n_O2 = term.*squeeze(m1.O2(ilon,ilat,1:end-4,it))/m_O2;
+m1.n_O1 = term.*squeeze(m1.O1(ilon,ilat,1:end-4,it))/m_O1;
+m1.n_N2 = term.*squeeze(m1.N2(ilon,ilat,1:end-4,it))/m_N2;
+m1.n_HE = term.*squeeze(m1.HE(ilon,ilat,1:end-4,it))/m_HE;
+%%
+% plot m0 and m1 profiles
+subplot 121
+semilogx([m0.n_O2,m0.n_O1,m0.n_N2,m0.n_HE],1e-5*squeeze(m0.ZGMID(ilon,ilat,1:end-4,it)),'REPLACE_WITH_DASH_DASH','linewidth',1);
+hold on;
+set(gca,'colororderindex',1);
+semilogx([m1.n_O2,m1.n_O1,m1.n_N2,m1.n_HE],1e-5*squeeze(m1.ZGMID(ilon,ilat,1:end-4,it)),'linewidth',1);
+xlabel('Number Density (1/cm^3)');
+ylabel('Height (km)');
+title({'20 Minutes After Onset',sprintf('Lon=%d, Lat=%.1f',m0.lon(ilon),m0.lat(ilat))});
+xlim([1e6,1e10])
+ylim([100,550]);
+legend('O_2','O','N_2','He');
+
+
+
+
+%% Plot vertical profiles of number density after 1 day of simulation at the location of maximum $\rho_1/\rho_0$ (from Figure 3)
+% Starting with the ideal gas law, we want to calculate number density for
+% species $i$:
+%
+% $$ P = n k_B T $$
+% 
+% Substitute $\rho = n \bar{m}$
+%
+% $$ P = \frac{\rho}{\bar{m}} k_B T $$
+%
+% Multiply both sides by the mass mixing ratio of species $i$:
+%
+% $$ \psi_i P = \frac{\psi_i \rho}{\bar{m}} k_B T $$
+%
+% Substitute $\psi_i \rho = \rho_i = n_i m_i$:
+%
+% $$ \psi_i P = \frac{n_i m_i}{\bar{m}} k_B T $$
+%
+% Solve for number density $n_i$ in terms of TIE-GCM output variables:
+%
+% $$ n_i = \frac{\psi_i P \bar{m}}{m_i k_B T} $$
+
+it = 72; % time index
+%%
+% calculate local time
+slt = mod([1,1/60]*double(m0.mtime(2:3,it))+m0.lon/15,24);
+%%
+% find maximum density difference from previous plot after 1 day of
+% simulation
+[ilon,ilat] = find( max(max(m1.den_alt./m0.den_alt)) == m1.den_alt./m0.den_alt );
+%%
+% Calculate pressure on the midpoints (lev) as opposed to interfaces (ilev) for these
+% variables:
+P = m0.p0_model*exp(-m0.lev);
+%%
+% Calculate mean mass $\bar{m}$ for baseline model m0
+m0.HE = 1-m0.O2-m0.O1-m0.N2; % quick fix: I forgot to output HE in these files, woops
+m0.mbar = 1./(m0.O2/32+m0.O1/16+m0.N2/28+m0.HE/4);
+% Calculate $n_i$ for baseline model m0 (ignore the upper 4 grid points for composition)
+term = (1/boltz)*P(1:end-4).*squeeze(m0.mbar(ilon,ilat,1:end-4,it)./m0.TN(ilon,ilat,1:end-4,it));
+m0.n_O2 = term.*squeeze(m0.O2(ilon,ilat,1:end-4,it))/m_O2;
+m0.n_O1 = term.*squeeze(m0.O1(ilon,ilat,1:end-4,it))/m_O1;
+m0.n_N2 = term.*squeeze(m0.N2(ilon,ilat,1:end-4,it))/m_N2;
+m0.n_HE = term.*squeeze(m0.HE(ilon,ilat,1:end-4,it))/m_HE;
+%%
+% Calculate mean mass $\bar{m}$ for disturbed model m1
+m1.HE = 1-m1.O2-m1.O1-m1.N2; % quick fix: I forgot to output HE in these files, woops
+m1.mbar = 1./(m1.O2/32+m1.O1/16+m1.N2/28+m1.HE/4);
+%%
+% Calculate $n_i$ for disturbed model m1 (ignore the upper 4 grid points for composition)
+term = (1/boltz)*P(1:end-4).*squeeze(m1.mbar(ilon,ilat,1:end-4,it)./m1.TN(ilon,ilat,1:end-4,it));
+m1.n_O2 = term.*squeeze(m1.O2(ilon,ilat,1:end-4,it))/m_O2;
+m1.n_O1 = term.*squeeze(m1.O1(ilon,ilat,1:end-4,it))/m_O1;
+m1.n_N2 = term.*squeeze(m1.N2(ilon,ilat,1:end-4,it))/m_N2;
+m1.n_HE = term.*squeeze(m1.HE(ilon,ilat,1:end-4,it))/m_HE;
+%%
+% plot m0 and m1 profiles
+subplot 122
+semilogx([m0.n_O2,m0.n_O1,m0.n_N2,m0.n_HE],1e-5*squeeze(m0.ZGMID(ilon,ilat,1:end-4,it)),'REPLACE_WITH_DASH_DASH','linewidth',1);
+hold on;
+set(gca,'colororderindex',1);
+semilogx([m1.n_O2,m1.n_O1,m1.n_N2,m1.n_HE],1e-5*squeeze(m1.ZGMID(ilon,ilat,1:end-4,it)),'linewidth',1);
+xlabel('Number Density (1/cm^3)');
+ylabel('Height (km)');
+title({'1 Day After Onset',sprintf('Lon=%d, Lat=%.1f',m0.lon(ilon),m0.lat(ilat))});
+xlim([1e6,1e10])
+ylim([100,550]);
+legend('O_2','O','N_2','He');
+##### SOURCE END #####
+--></body></html>
