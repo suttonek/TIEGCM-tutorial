@@ -5,7 +5,7 @@ tagline: Quick-start TIEGCM tutorial
 description: Quick-start tutorial for working with TIEGCM output using Matlab
 ---
 
-Quick-start tutorial for working with TIEGCM output using Matlab
+A quick-start tutorial for working with TIEGCM output using Matlab
 
 [Click here for tutorial](https://suttonek.github.io/TIEGCM-tutorial/tutorial.html)
 
@@ -14,6 +14,6 @@ Quick-start tutorial for working with TIEGCM output using Matlab
 Here are some auxiliary Matlab functions:  
 
 - [tutorial.m](https://suttonek.github.io/TIEGCM-tutorial/tutorial.m)
-- [net_netcdf_variables.m](https://suttonek.github.io/TIEGCM-tutorial/net_netcdf_variables.m)
+- [get_netcdf_variables.m](https://suttonek.github.io/TIEGCM-tutorial/get_netcdf_variables.m)
 - [GREGORIANtoJD_vector.m](https://suttonek.github.io/TIEGCM-tutorial/GREGORIANtoJD_vector.m)
 - [JDtoGREGORIAN_vector.m](https://suttonek.github.io/TIEGCM-tutorial/JDtoGREGORIAN_vector.m)
