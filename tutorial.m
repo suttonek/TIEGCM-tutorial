@@ -6,11 +6,11 @@
 
 %% Load TIE-GCM output netCDF files
 % m0 is the baseline simulation (low F10.7 and Kp)
-m0 = get_netcdf_variables('lowF107.lowKp/s080.nc');
+m0 = get_netcdf_variables('lowF107.lowKp.s080.nc');
 %%
 % m1 is the "disturbed" case, in which a step function in Kp is applied at
 % t=0
-m1 = get_netcdf_variables('lowF107.lowtohighKp/s080.nc');
+m1 = get_netcdf_variables('lowF107.lowtohighKp.s080.nc');
 %%
 % increase figure font size
 set(0,'defaultaxesfontsize',16);
