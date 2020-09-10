@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 A quick-start tutorial for working with TIEGCM output using Matlab
 
 [Click here for the tutorial](https://suttonek.github.io/TIEGCM-tutorial/tutorial.html)
