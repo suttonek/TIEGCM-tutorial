@@ -1,10 +1,3 @@
-___
-layout: page
-title: TIEGCM-tutorial
-tagline: Quick-start TIEGCM tutorial
-description: Quick-start tutorial for working with TIEGCM output using Matlab
-___
-
 A quick-start tutorial for working with TIEGCM output using Matlab
 
 [Click here for the tutorial](https://suttonek.github.io/TIEGCM-tutorial/tutorial.html)
